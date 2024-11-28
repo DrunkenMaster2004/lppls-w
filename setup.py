@@ -3,10 +3,10 @@ import setuptools
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-setuptools.setup(name='lppls',
+setuptools.setup(name='lppls-w',
       version='0.6.19',
       description='A Python module for fitting the LPPLS model to data.',
-      packages=['lppls'],
+      packages=['lppls-w'],
       long_description=long_description,
       long_description_content_type='text/markdown',
       url='https://github.com/DrunkenMaster2004/lppls-w',
