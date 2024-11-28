@@ -11,7 +11,7 @@ from tqdm import tqdm
 import xarray as xr
 
 
-class LPPLS(object):
+class lppls_w(object):
 
     def __init__(self, observations):
         """
@@ -30,7 +30,7 @@ class LPPLS(object):
 
     @staticmethod
     @njit
-    def lppls(t, tc, m, w, a, b, c1, c2):
+    def lppls_w(t, tc, m, w, a, b, c1, c2):
         np.random.seed(69)
         random.seed(69)
 
@@ -63,7 +63,7 @@ class LPPLS(object):
         # print('type', type(res))
         # print('func_restricted', res)
 
-        delta = self.lppls(observations[0, :], tc, m, w, a, b, c1, c2)
+        delta = self.lppls_w(observations[0, :], tc, m, w, a, b, c1, c2)
         delta = np.subtract(delta, observations[1, :])
         delta = np.power(delta, 2)
         return np.sum(delta)
@@ -72,7 +72,7 @@ class LPPLS(object):
     @njit
     def matrix_equation(observations, tc, m, w):
         """
-        Derive linear parameters in LPPLs from nonlinear ones.
+        Derive linear parameters in lppls_w from nonlinear ones.
         """
 
         np.random.seed(69)
@@ -228,7 +228,7 @@ class LPPLS(object):
         # ts = pd.to_datetime(t_obs*10**9)
         # compatible_date = np.array(ts, dtype=np.datetime64)
 
-        lppls_fit = [self.lppls(t, tc, m, w, a, b, c1, c2) for t in t_obs]
+        lppls_w_fit = [self.lppls_w(t, tc, m, w, a, b, c1, c2) for t in t_obs]
         price = self.observations[1, :]
 
         first = t_obs[0]
@@ -243,7 +243,7 @@ class LPPLS(object):
         #     fontsize=16)
 
         ax1.plot(time_ord, price, label="price", color="black", linewidth=0.75)
-        ax1.plot(time_ord, lppls_fit, label="lppls fit", color="blue", alpha=0.5)
+        ax1.plot(time_ord, lppls_w_fit, label="lppls_w fit", color="blue", alpha=0.5)
         # if show_tc:
         #     ax1.axvline(x=np.array(tc_ts, dtype=np.datetime64), label='tc={}'.format(ts), color='red', alpha=0.5)
         # set grids
@@ -512,7 +512,7 @@ class LPPLS(object):
             obs_shrinking_slice = obs[:, j:window_size]
 
             # fit the model to the data and get back the params
-            if self.__class__.__name__ == "LPPLSCMAES":
+            if self.__class__.__name__ == "lppls_wCMAES":
                 # print('cmaes fit is running!')
                 tc, m, w, a, b, c, c1, c2, O, D = self.fit(
                     max_iteration=269, pop_size=4, obs=obs_shrinking_slice

@@ -1,8 +1,8 @@
-from lppls.lppls import LPPLS
+from lppls_w.lppls_w import lppls_w
 import numpy as np
 
 
-class QLPPLS(LPPLS):
+class Qlppls_w(lppls_w):
     def __init__(self, observations, q=0.5):
         super().__init__(observations)
         self.q = q
@@ -25,7 +25,7 @@ class QLPPLS(LPPLS):
         rM = self.matrix_equation(observations, tc, m, w)
         a, b, c1, c2 = rM[:, 0].tolist()
 
-        delta = [self.lppls(t, tc, m, w, a, b, c1, c2) for t in observations[0, :]]
+        delta = [self.lppls_w(t, tc, m, w, a, b, c1, c2) for t in observations[0, :]]
         delta = np.subtract(delta, observations[1, :])
 
         # Use the L1 norm (sum of absolute differences) instead of the L2 norm

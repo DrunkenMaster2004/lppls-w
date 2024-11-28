@@ -1,11 +1,11 @@
 import cma as cm
-from lppls.lppls import LPPLS
+from lppls_w.lppls_w import lppls_w
 # import multiprocessing as mp
 import numpy as np
 from scipy.stats import chisquare
 
 
-class LPPLSCMAES(LPPLS):
+class lppls_wCMAES(lppls_w):
 
     def __init__(self, observations):
         super().__init__(observations)
@@ -31,7 +31,7 @@ class LPPLSCMAES(LPPLS):
             print(e)
 
         t = obs[0, :]
-        res = super().lppls(t, tc, m, w, a, b, c1, c2)
+        res = super().lppls_w(t, tc, m, w, a, b, c1, c2)
 
 
 
@@ -103,7 +103,7 @@ class LPPLSCMAES(LPPLS):
 
             c = self.get_c(c1, c2)
 
-            # Use sklearn format for storing fit params -> original code from lppls package
+            # Use sklearn format for storing fit params -> original code from lppls_w package
             for coef in ['tc', 'm', 'w', 'a', 'b', 'c', 'c1', 'c2']:
                 self.coef_[coef] = eval(coef)
 
