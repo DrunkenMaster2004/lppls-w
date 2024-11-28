@@ -9,7 +9,7 @@ setuptools.setup(name='lppls',
       packages=['lppls'],
       long_description=long_description,
       long_description_content_type='text/markdown',
-      url='https://github.com/Boulder-Investment-Technologies/lppls',
+      url='https://github.com/DrunkenMaster2004/lppls-w',
       python_requires='>=3.7',
       install_requires=[
           'pandas',
