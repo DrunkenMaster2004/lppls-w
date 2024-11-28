@@ -25,10 +25,15 @@ class LPPLS(object):
         self.observations = observations
         self.coef_ = {}
         self.indicator_result = []
+        np.random.seed(69)
+        random.seed(69)
 
     @staticmethod
     @njit
     def lppls(t, tc, m, w, a, b, c1, c2):
+        np.random.seed(69)
+        random.seed(69)
+
         dt = np.abs(tc - t) + 1e-8
         return a + np.power(dt, m) * (
             b + ((c1 * np.cos(w * np.log(dt))) + (c2 * np.sin(w * np.log(dt))))
@@ -44,6 +49,10 @@ class LPPLS(object):
         Returns:
             (float)
         """
+
+        np.random.seed(69)
+        random.seed(69)
+
         tc = x[0]
         m = x[1]
         w = x[2]
@@ -65,6 +74,10 @@ class LPPLS(object):
         """
         Derive linear parameters in LPPLs from nonlinear ones.
         """
+
+        np.random.seed(69)
+        random.seed(69)
+
         T = observations[0]
         P = observations[1]
         N = len(T)
@@ -116,6 +129,10 @@ class LPPLS(object):
         Returns:
             tc, m, w, a, b, c, c1, c2, O, D
         """
+
+        np.random.seed(69)
+        random.seed(69)
+
         if obs is None:
             obs = self.observations
 
@@ -165,6 +182,9 @@ class LPPLS(object):
             tc, m, w, a, b, c, c1, c2
         """
 
+        np.random.seed(69)
+        random.seed(69)
+
         cofs = minimize(
             args=observations, fun=self.func_restricted, x0=seed, method=minimizer
         )
@@ -196,6 +216,10 @@ class LPPLS(object):
         Returns:
             nothing, should plot the fit
         """
+
+        np.random.seed(69)
+        random.seed(69)
+
         tc, m, w, a, b, c, c1, c2 = self.coef_.values()
         time_ord = [
             pd.Timestamp.fromordinal(d) for d in self.observations[0, :].astype("int32")
@@ -273,20 +297,6 @@ class LPPLS(object):
                 O = fits["O"]
                 D = fits["D"]
 
-                # t_delta = t2 - t1
-                # pct_delta_min = t_delta * 0.5
-                # pct_delta_max = t_delta * 0.5
-                # tc_min = t2 - pct_delta_min
-                # tc_max = t2 + pct_delta_max
-
-                # [max(t2 - 60, t2 - 0.5 * (t2 - t1)), min(252, t2 + 0.5 * (t2 - t1))]
-
-                # print('lb: max({}, {})={}'.format(t2 - 60, t2 - 0.5 * (t2 - t1), max(t2 - 60, t2 - 0.5 * (t2 - t1))))
-                # print('ub: min({}, {})={}'.format(t2 + 252, t2 + 0.5 * (t2 - t1), min(t2 + 252, t2 + 0.5 * (t2 - t1))))
-                #
-                # print('{} < {} < {}'.format(max(t2 - 60, t2 - 0.5 * (t2 - t1)), tc, min(t2 + 252, t2 + 0.5 * (t2 - t1))))
-                # print('______________')
-
                 tc_in_range = (
                     max(t2 - 60, t2 - 0.5 * (t2 - t1))
                     < tc
@@ -332,14 +342,6 @@ class LPPLS(object):
             pos_conf_lst.append(pos_conf)
             neg_conf_lst.append(neg_conf)
 
-            # pos_lst.append(pos_count / (pos_count + neg_count))
-            # neg_lst.append(neg_count / (pos_count + neg_count))
-
-            # tc_lst.append(tc_cnt)
-            # m_lst.append(m_cnt)
-            # w_lst.append(w_cnt)
-            # O_lst.append(O_cnt)
-            # D_lst.append(D_cnt)
 
         res_df = pd.DataFrame(
             {
@@ -351,17 +353,9 @@ class LPPLS(object):
             }
         )
         return res_df
-        # return ts, price, pos_lst, neg_lst, pos_conf_lst, neg_conf_lst, #tc_lst, m_lst, w_lst, O_lst, D_lst
 
     def plot_confidence_indicators(self, res):
-        """
-        Args:
-            res (list): result from mp_compute_indicator
-            condition_name (str): the name you assigned to the filter condition in your config
-            title (str): super title for both subplots
-        Returns:
-            nothing, should plot the indicator
-        """
+
         res_df = self.compute_indicators(res)
         fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, sharex=True, figsize=(18, 10))
 
@@ -414,17 +408,6 @@ class LPPLS(object):
         ax2_0.legend(loc=2)
 
         plt.xticks(rotation=45)
-        # format the ticks
-        # ax1.xaxis.set_major_locator(years)
-        # ax2.xaxis.set_major_locator(years)
-        # ax1.xaxis.set_major_formatter(years_fmt)
-        # ax2.xaxis.set_major_formatter(years_fmt)
-        # ax1.xaxis.set_minor_locator(months)
-        # ax2.xaxis.set_minor_locator(months)
-
-        # rotates and right aligns the x labels, and moves the bottom of the
-        # axes up to make room for them
-        # fig.autofmt_xdate()
 
     def mp_compute_nested_fits(
         self,
@@ -435,13 +418,15 @@ class LPPLS(object):
         inner_increment=2,
         max_searches=25,
         filter_conditions_config={},
-    ):
+    ):  
+        np.random.seed(69)
+        random.seed(69)
+        
         obs_copy = self.observations
         obs_opy_len = len(obs_copy[0]) - window_size
         func = self._func_compute_nested_fits
 
-        # print('obs_copy', obs_copy)
-        # print('obs_opy_len', obs_opy_len)
+
 
         func_arg_map = [
             (
@@ -523,24 +508,6 @@ class LPPLS(object):
         t2 = obs[0][-1]
         p1 = obs[1][0]
         p2 = obs[1][-1]
-
-        # if self.scale_obs:
-        #     t1 = self.inverse_transform_observations([[t1, p1]])[0, 0]
-        #     t2 = self.inverse_transform_observations([[t2, p2]])[0, 0]
-        #     p1 = self.inverse_transform_observations([[t1, p1]])[0, 1]
-        #     p2 = self.inverse_transform_observations([[t2, p2]])[0, 1]
-
-        # tc_init_min, tc_init_max = self._get_tc_bounds(obs_shrinking_slice, tc_min, tc_max)
-        #
-        # tc_in_range = last - tc_init_min < tc < last + tc_init_max
-        # m_in_range = m_min < m < m_max
-        # w_in_range = w_min < w < w_max
-        # O_in_range = self._is_O_in_range(tc, w, last, O_min)
-        # D_in_range = self._is_D_in_range(m, w, b, c, D_min)
-        #
-        # qualified[value] = tc_in_range and m_in_range and w_in_range and O_in_range and D_in_range
-
-        # run n fits on the observation slice.
         for j in range(0, window_delta, inner_increment):
             obs_shrinking_slice = obs[:, j:window_size]
 
@@ -548,7 +515,7 @@ class LPPLS(object):
             if self.__class__.__name__ == "LPPLSCMAES":
                 # print('cmaes fit is running!')
                 tc, m, w, a, b, c, c1, c2, O, D = self.fit(
-                    max_iteration=2500, pop_size=4, obs=obs_shrinking_slice
+                    max_iteration=269, pop_size=4, obs=obs_shrinking_slice
                 )
             else:
                 tc, m, w, a, b, c, c1, c2, O, D = self.fit(
