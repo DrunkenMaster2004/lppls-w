@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: lppls-w
+Version: 0.6.19
+Summary: A Python module for fitting the LPPLS model to data.
+Home-page: https://github.com/DrunkenMaster2004/lppls-w
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: pandas
+Requires-Dist: matplotlib
+Requires-Dist: scipy
+Requires-Dist: xarray
+Requires-Dist: cma
+Requires-Dist: tqdm
+Requires-Dist: numba
+
+Adjusted LPPLS model to run in windows OS & remove random seeding

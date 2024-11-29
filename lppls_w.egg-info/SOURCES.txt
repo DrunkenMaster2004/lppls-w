@@ -1,0 +1,15 @@
+README.md
+setup.cfg
+setup.py
+lppls-w/data_loader.py
+lppls-w/lppls.py
+lppls-w/lppls_cmaes.py
+lppls-w/lppls_lm.py
+lppls-w/lppls_q.py
+lppls-w/data/nasdaq_dotcom.csv
+lppls_w.egg-info/PKG-INFO
+lppls_w.egg-info/SOURCES.txt
+lppls_w.egg-info/dependency_links.txt
+lppls_w.egg-info/not-zip-safe
+lppls_w.egg-info/requires.txt
+lppls_w.egg-info/top_level.txt
